@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+
+
+android {
+    namespace 'com.zebra.dw_webview'
+    compileSdk 34
+
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        //compose true
+        aidl true
+    }
+
+    defaultConfig {
+        applicationId "com.zebra.dw_webview"
+        minSdk 27
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation("androidx.webkit:webkit:1.10.0")
+    implementation 'androidx.activity:activity:1.8.0'
+}

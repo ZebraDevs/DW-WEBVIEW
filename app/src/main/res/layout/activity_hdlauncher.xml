@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_SCAN"
+        android:layout_width="match_parent"
+        android:layout_height="20dip"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_weight="0.5"
+        android:onClick="onClickbtn_SCAN"
+        android:text="SCAN" />
+
+    <WebView
+        android:id="@+id/web_interface"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        tools:ignore="WebViewLayout" />
+</LinearLayout>
+</ScrollView>

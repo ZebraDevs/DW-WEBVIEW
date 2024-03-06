@@ -1,0 +1,54 @@
+<html>
+<body bgcolor="red">
+<center>
+    <br/>
+    <input id="barcode" type="text" placeholder="Scan a barcode"/>
+    <br/>
+    <br/>
+    <input id="quantity" type="number" value="1" placeholder="Quantity"/>
+    <br/>
+    <br/>
+    <button onclick="writeOutput();">ENTER</button>
+
+    <p id="outText">
+</center>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const inputField = document.getElementById('quantity');
+
+        inputField.addEventListener('click', () => {
+            inputField.select();
+        });
+
+        logOutput(DATAWEDGE.getWebviewVersion());
+    });
+    function msg(){
+
+    var bc=document.getElementById("barcode").value;
+    var qty=document.getElementById("quantity").value;
+
+    DATAWEDGE.showMsg(bc,qty);
+    }
+
+    function msg(bc, qty){
+    DATAWEDGE.showMsg(bc,qty);
+    }
+
+    function formFill(bc){
+    document.getElementById("barcode").value = ""+bc;
+    }
+
+    function writeOutput(){
+        var bc=document.getElementById("barcode").value;
+        var qty=document.getElementById("quantity").value;
+        document.getElementById("outText").innerText  = "ITEM:"+bc+" Q="+qty + "\n"+document.getElementById("outText").innerText;
+        document.getElementById("barcode").value =''
+        document.getElementById("quantity").value=1
+    }
+
+    function logOutput(txt){
+        document.getElementById("outText").innerText  = txt;
+    }
+</script>
+</html>
