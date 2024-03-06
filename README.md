@@ -2,7 +2,7 @@
 
 
 - Successfully tested on A8.1, A13, Webview 121 and 122
-- Automatically creates a Datawedge profile used by just this app
+- Self-creates a Datawedge profile (DW-WEBVIEW) used by just this app
 - Screenshots
 
 ![image](https://github.com/NDZL/DW-WEBVIEW/assets/11386676/ada8ffc5-dfee-439c-895d-cccbfd781c90)
