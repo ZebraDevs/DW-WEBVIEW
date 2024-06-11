@@ -61,10 +61,37 @@ public class HDLauncherActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String acquiredbarcode = Objects.requireNonNull(intent.getStringExtra("com.symbol.datawedge.data_string"));
+                //acquiredbarcode = filterOutNonPrintableCharactersWIthRegex(acquiredbarcode);
+                //acquiredbarcode = filterOutNonAlphaNumericCharactersWIthRegex(acquiredbarcode);
+                //acquiredbarcode = encodeString(acquiredbarcode);
                 Log.i("onReceive", "barcode="+ acquiredbarcode);
+                //printAsciiValues(acquiredbarcode);
                 webView.loadUrl("javascript:formFill('"+acquiredbarcode+"')");
             }
         });
+    }
+
+    public String filterOutNonPrintableCharactersWIthRegex(String input) {
+        return input.replaceAll("[^\\x24-\\x7e]", "_");
+    }
+
+    //filterout all characters that not numbers or letters with regex
+    public String filterOutNonAlphaNumericCharactersWIthRegex(String input) {
+        return input.replaceAll("[^a-zA-Z0-9]", "");
+    }
+
+    //encode string
+    public String encodeString(String input) {
+        return Uri.encode(input);
+    }
+
+    //print the ascii value of each character in the string
+    public void printAsciiValues(String input) {
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            int ascii = (int) c;
+            Log.i("printAsciiValues", "ascii10="+ascii);
+        }
     }
 
     @JavascriptInterface

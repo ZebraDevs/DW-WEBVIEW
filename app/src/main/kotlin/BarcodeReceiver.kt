@@ -60,6 +60,24 @@ fun dwSetPrefixPostfix(context: Context): Bundle {
     return bBDFpluginConfig
 }
 
+fun dwSwitchOffKeystrokeOutput(context: Context): Bundle {
+
+    val bKSOpluginConfig = Bundle()
+    bKSOpluginConfig.putString("PLUGIN_NAME", "KEYSTROKE")
+    bKSOpluginConfig.putString("RESET_CONFIG", "false")
+
+    // param_list bundle properties
+    val bParams = Bundle()
+    bParams.putString("keystroke_output_enabled", "false")
+
+    bKSOpluginConfig.putBundle("PARAM_LIST", bParams)
+
+    return bKSOpluginConfig
+
+}
+
+
+
 fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver) {
 
     val bMainProfile = Bundle()
@@ -73,7 +91,7 @@ fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver)
     bParams.putString("intent_action", appName)
     bParams.putString("intent_category", "android.intent.category.DEFAULT")
     bParams.putString("intent_delivery", "2")
-    bParams.putString("keystroke_output_enabled", "false")
+
 
     //configBundle.putString(PROFILE_NAME, "DW-WEBVIEW")
     bMainProfile.putString(PROFILE_NAME, appName)
@@ -95,6 +113,8 @@ fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver)
     val bundleAllPluginsConfig = ArrayList<Bundle>()
     bundleAllPluginsConfig.add(bOutputPluginConfig)
     bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))
+    bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput(context))
+
     bMainProfile.putParcelableArrayList("PLUGIN_CONFIG", bundleAllPluginsConfig)
 
     val i = Intent()

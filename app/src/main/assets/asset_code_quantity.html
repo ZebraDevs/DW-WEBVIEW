@@ -25,18 +25,19 @@
     });
     function msg(){
 
-    var bc=document.getElementById("barcode").value;
-    var qty=document.getElementById("quantity").value;
+        var bc=document.getElementById("barcode").value;
+        var qty=document.getElementById("quantity").value;
 
-    DATAWEDGE.showMsg(bc,qty);
+        DATAWEDGE.showMsg(bc,qty);
     }
 
     function msg(bc, qty){
-    DATAWEDGE.showMsg(bc,qty);
+        DATAWEDGE.showMsg(bc,qty);
     }
 
     function formFill(bc){
-    document.getElementById("barcode").value = ""+bc;
+        document.getElementById("barcode").value = ""+bc;
+        writeOutput();
     }
 
     function writeOutput(){
