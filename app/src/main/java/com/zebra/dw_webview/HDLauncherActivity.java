@@ -65,8 +65,6 @@ public class HDLauncherActivity extends AppCompatActivity {
                 webView.loadUrl("javascript:formFill('"+acquiredbarcode+"')");
             }
         });
-
-
     }
 
     @JavascriptInterface

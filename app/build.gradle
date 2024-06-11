@@ -13,6 +13,7 @@ android {
         // Enables Jetpack Compose for this module
         //compose true
         aidl true
+        buildConfig true
     }
 
     defaultConfig {
@@ -20,7 +21,7 @@ android {
         minSdk 27
         targetSdk 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
 
     buildTypes {
@@ -28,10 +29,32 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+
+    flavorDimensions += "variant"
+    productFlavors {
+        create("variant1") {
+            dimension = "variant"
+            applicationIdSuffix = ".var1"
+            versionNameSuffix = "-variant1"
+            buildConfigField("String", "PREFIX", "\"1#\"")
+
+            resValue("string", "app_name", "v1-DW-Webview")
+        }
+        create("variant2") {
+            dimension = "variant"
+            applicationIdSuffix = ".var2"
+            versionNameSuffix = "-variant2"
+            buildConfigField("String", "PREFIX", "\"2#\"")
+
+            resValue("string", "app_name", "v2-DW-Webview")
+        }
     }
 
 }
