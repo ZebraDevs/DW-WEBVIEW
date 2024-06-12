@@ -41,13 +41,14 @@
         `bundleApp1.putStringArray("ACTIVITY_LIST", activityName)`
 
     - the IntentOutput plugin is configured to send an intent named after the applicationID (app's package name)
-      `bParams.putString("intent_action", appName)`
+        `bParams.putString("intent_action", appName)`
 
     - a prefix (#1 and #2) is added to the reading output to differentiate the profile that generated it
 
-    `bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))`
+        `bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))`
 
     - the KeystrokeOutput plugin is switched off
+
         `bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput(context))`
 
 
