@@ -29,5 +29,16 @@
 
     ![image](https://github.com/ZebraDevs/DW-WEBVIEW/assets/11386676/c0cf74d4-f71f-41ef-9a33-00fd6b64d1f3)
 
+   for other purposes the received barcode data is then passed to a webview and displayed as HTML text.
+
+- DW profiles have the following features
+    - each profile is associated to the respective app variant
+    `    bundleApp1.putString("PACKAGE_NAME", appName)
+    val activityName = arrayOf("*")
+    bundleApp1.putStringArray("ACTIVITY_LIST", activityName)`
+
+- the IntentOutput plugin is configured to send an intent named after the applicationID (app's package name)
+      `bParams.putString("intent_action", appName)`
+
 
 
