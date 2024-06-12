@@ -9,8 +9,19 @@
   
 - Screenshots
 
-![image](https://github.com/NDZL/DW-WEBVIEW/assets/11386676/ada8ffc5-dfee-439c-895d-cccbfd781c90)
+    ![image](https://github.com/NDZL/DW-WEBVIEW/assets/11386676/ada8ffc5-dfee-439c-895d-cccbfd781c90)
 
-##
+
+
+## Code annotations about DW Intents and Profiles
+
+
+- The onCreate method (https://github.com/ZebraDevs/DW-WEBVIEW/blob/2541876d11670e7616d7a9e584a0f8991ae4867a/app/src/main/java/com/zebra/dw_webview/HDLauncherActivity.java#L47) defines at the same time
+    - a new DW profile
+    ![image](https://github.com/ZebraDevs/DW-WEBVIEW/assets/11386676/46f8b878-7c06-4e5b-b155-dd0f58378d9f)
+
+    - and the related Intent Receiver
+    ![image](https://github.com/ZebraDevs/DW-WEBVIEW/assets/11386676/c0cf74d4-f71f-41ef-9a33-00fd6b64d1f3)
+
 
 
