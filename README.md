@@ -33,11 +33,14 @@
 
 - DW profiles have the following features
     - each profile is associated to the respective app variant
+
     `    bundleApp1.putString("PACKAGE_NAME", appName)
+
     val activityName = arrayOf("*")
+
     bundleApp1.putStringArray("ACTIVITY_LIST", activityName)`
 
-- the IntentOutput plugin is configured to send an intent named after the applicationID (app's package name)
+    - the IntentOutput plugin is configured to send an intent named after the applicationID (app's package name)
       `bParams.putString("intent_action", appName)`
 
 
