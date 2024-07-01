@@ -3,6 +3,8 @@ package com.zebra.dw_webview;
 import static android.widget.Toast.makeText;
 
 
+import static com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt.dwEnumScanners;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 
 import com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 //chrome://inspect/#devices for webview debugging
@@ -44,8 +47,7 @@ public class HDLauncherActivity extends AppCompatActivity {
     WebView webView;
     //@SuppressLint("JavascriptInterface")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
         starterIntent = getIntent();
 
         setContentView(R.layout.activity_hdlauncher);
@@ -60,15 +62,41 @@ public class HDLauncherActivity extends AppCompatActivity {
         BarcodeReceiverKt.createDataWedgeProfile(this, new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String acquiredbarcode = Objects.requireNonNull(intent.getStringExtra("com.symbol.datawedge.data_string"));
-                //acquiredbarcode = filterOutNonPrintableCharactersWIthRegex(acquiredbarcode);
-                //acquiredbarcode = filterOutNonAlphaNumericCharactersWIthRegex(acquiredbarcode);
-                //acquiredbarcode = encodeString(acquiredbarcode);
-                Log.i("onReceive", "barcode="+ acquiredbarcode);
-                //printAsciiValues(acquiredbarcode);
-                webView.loadUrl("javascript:formFill('"+acquiredbarcode+"')");
+
+                if(intent.getAction().equals("com.symbol.datawedge.api.RESULT_ACTION")) {
+
+                    if (intent.hasExtra("com.symbol.datawedge.api.RESULT_ENUMERATE_SCANNERS")) {
+                        ArrayList<Bundle> scannerList = (ArrayList<Bundle>) intent.getSerializableExtra("com.symbol.datawedge.api.RESULT_ENUMERATE_SCANNERS");
+                        if ((scannerList != null) && (scannerList.size() > 0)) {
+                            for (Bundle bunb : scannerList) {
+                                String[] entry = new String[4];
+                                entry[0] = bunb.getString("SCANNER_NAME");
+                                entry[1] = bunb.getBoolean("SCANNER_CONNECTION_STATE") + "";
+                                entry[2] = bunb.getInt("SCANNER_INDEX") + "";
+
+                                entry[3] = bunb.getString("SCANNER_IDENTIFIER");
+
+                                Log.d("scanners", "Scanner:" + entry[0] + " Connection:" + entry[1] + " Index:" + entry[2] + " ID:" + entry[3]);
+                            }
+                        }
+                    }
+                }
+                else {
+
+
+                    String acquiredbarcode = Objects.requireNonNull(intent.getStringExtra("com.symbol.datawedge.data_string"));
+                    String acquiredtype = Objects.requireNonNull(intent.getStringExtra("com.symbol.datawedge.label_type"));
+                    //acquiredbarcode = filterOutNonPrintableCharactersWIthRegex(acquiredbarcode);
+                    //acquiredbarcode = filterOutNonAlphaNumericCharactersWIthRegex(acquiredbarcode);
+                    //acquiredbarcode = encodeString(acquiredbarcode);
+                    Log.i("onReceive", "barcode=" + acquiredbarcode + " type=" + acquiredtype);
+                    //printAsciiValues(acquiredbarcode);
+                    webView.loadUrl("javascript:formFill('" + acquiredbarcode + "')");
+                }
             }
         });
+
+        dwEnumScanners(this);
     }
 
     public String filterOutNonPrintableCharactersWIthRegex(String input) {

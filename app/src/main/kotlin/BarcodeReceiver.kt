@@ -60,7 +60,7 @@ fun dwSetPrefixPostfix(context: Context): Bundle {
     return bBDFpluginConfig
 }
 
-fun dwSwitchOffKeystrokeOutput(context: Context): Bundle {
+fun dwSwitchOffKeystrokeOutput(): Bundle {
 
     val bKSOpluginConfig = Bundle()
     bKSOpluginConfig.putString("PLUGIN_NAME", "KEYSTROKE")
@@ -76,6 +76,45 @@ fun dwSwitchOffKeystrokeOutput(context: Context): Bundle {
 
 }
 
+private fun dwSetAssociatedApps(appName: String): Array<Bundle> {
+    val bParams = Bundle()
+    bParams.putString("PACKAGE_NAME", appName)
+    bParams.putStringArray("ACTIVITY_LIST",  arrayOf("*"))
+
+    return arrayOf(bParams)
+}
+
+fun dwConfigBarcodeInput(): Bundle {
+
+    val barcodeInputPlugin = Bundle()
+    barcodeInputPlugin.putString("PLUGIN_NAME", "BARCODE")
+    barcodeInputPlugin.putString("RESET_CONFIG", "true")
+
+    val barCodeProps = Bundle()
+    barCodeProps.putString("scanner_selection", "0")  //0 for internal camera - auto for internal imager
+    barCodeProps.putString("scanner_input_enabled", "true")
+    barCodeProps.putString("decoder_qrcode", "false")
+
+
+    barcodeInputPlugin.putBundle("PARAM_LIST", barCodeProps)
+
+    return barcodeInputPlugin
+
+}
+
+fun dwEnumScanners(context: Context) {
+
+    val i = Intent()
+    i.setAction("com.symbol.datawedge.api.ACTION")
+    i.putExtra("com.symbol.datawedge.api.ENUMERATE_SCANNERS", "")
+    context.sendBroadcast(i);
+}
+
+
+
+
+
+
 
 
 fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver) {
@@ -85,37 +124,26 @@ fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver)
     val bParams = Bundle()
     val bundleApp1 = Bundle()
     val appName = context.packageName
-    bParams.putString("scanner_selection", "auto")
-    bParams.putString("intent_output_enabled", "true")
-    //bParams.putString("intent_action", "com.ndzl.DW")
-    bParams.putString("intent_action", appName)
-    bParams.putString("intent_category", "android.intent.category.DEFAULT")
-    bParams.putString("intent_delivery", "2")
 
 
-    //configBundle.putString(PROFILE_NAME, "DW-WEBVIEW")
+
     bMainProfile.putString(PROFILE_NAME, appName)
     bMainProfile.putString(PROFILE_STATUS, "true")
     bMainProfile.putString(CONFIG_MODE, CONFIG_MODE_CREATE)
 
-    bundleApp1.putString("PACKAGE_NAME", appName)
-    val activityName = arrayOf("*")
-    bundleApp1.putStringArray("ACTIVITY_LIST", activityName)
-
-    bMainProfile.putParcelableArray("APP_LIST", arrayOf(bundleApp1))
-
-    bOutputPluginConfig.putString("PLUGIN_NAME", "INTENT")
-    bOutputPluginConfig.putString("RESET_CONFIG", "false")
-    bOutputPluginConfig.putBundle("PARAM_LIST", bParams)
-
-    //bMainProfile.putBundle("PLUGIN_CONFIG", bOutputPluginConfig)
-
     val bundleAllPluginsConfig = ArrayList<Bundle>()
-    bundleAllPluginsConfig.add(bOutputPluginConfig)
-    bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))
-    bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput(context))
+    bundleAllPluginsConfig.add( dwSetOutputPlugin(context.packageName ) )
+
+   // bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))
+    bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput())
+
+    bundleAllPluginsConfig.add(dwConfigBarcodeInput())
+
+
+
 
     bMainProfile.putParcelableArrayList("PLUGIN_CONFIG", bundleAllPluginsConfig)
+    bMainProfile.putParcelableArray("APP_LIST", dwSetAssociatedApps(context.packageName))
 
     val i = Intent()
     i.action = ACTION
@@ -146,7 +174,29 @@ fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver)
 
     filter.addAction(Activity_Intent_Filter)
     //filter.addAction(NOTIFICATION_ACTION)
+    filter.addAction("com.symbol.datawedge.api.RESULT_ACTION")
     context.registerReceiver(barcodeReceiver, filter, RECEIVER_EXPORTED)//register broadcast receiver - https://stackoverflow.com/questions/77235063/one-of-receiver-exported-or-receiver-not-exported-should-be-specified-when-a-rec
+}
+
+private fun dwSetOutputPlugin(
+
+    appName: String
+
+
+):Bundle {
+    val bParams = Bundle()
+    bParams.putString("intent_output_enabled", "true")
+    //bParams.putString("intent_action", "com.ndzl.DW")
+    bParams.putString("intent_action", appName)
+    bParams.putString("intent_category", "android.intent.category.DEFAULT")
+    bParams.putString("intent_delivery", "2")
+
+    val bOutputPluginConfig = Bundle()
+    bOutputPluginConfig.putString("PLUGIN_NAME", "INTENT")
+    bOutputPluginConfig.putString("RESET_CONFIG", "false")
+    bOutputPluginConfig.putBundle("PARAM_LIST", bParams)
+
+    return bOutputPluginConfig
 }
 
 
