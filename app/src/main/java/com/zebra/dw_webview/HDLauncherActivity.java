@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -27,6 +28,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -46,11 +48,14 @@ public class HDLauncherActivity extends AppCompatActivity {
     Intent starterIntent;
     WebView webView;
     //@SuppressLint("JavascriptInterface")
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
         starterIntent = getIntent();
 
         setContentView(R.layout.activity_hdlauncher);
+
+        //getWindow().setHideOverlayWindows(true);  //true to hide the DW camera preview
 
         webView = findViewById(R.id.web_interface);
 
@@ -97,6 +102,18 @@ public class HDLauncherActivity extends AppCompatActivity {
         });
 
         dwEnumScanners(this);
+
+    }
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
     }
 
     public String filterOutNonPrintableCharactersWIthRegex(String input) {
@@ -162,6 +179,26 @@ public class HDLauncherActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e("TAG", "onClickbtn_SCAN "+e.getMessage());
+        }
+    }
+
+    public void onClickbtn_CAMERA(View v) {
+        try {
+            dispatchTakePictureIntent();
+        } catch (Exception e) {
+            Log.e("TAG", "onClickbtn_CAMERA "+e.getMessage());
+        }
+    }
+
+    static boolean hideOverlayWindows = false;
+    @SuppressLint("NewApi")
+    public void onClickbtn_HideNonSysWin(View v) {
+        try {
+            hideOverlayWindows = !hideOverlayWindows;
+            getWindow().setHideOverlayWindows(hideOverlayWindows);
+
+        } catch (Exception e) {
+            Log.e("TAG", "onClickbtn_CAMERA "+e.getMessage());
         }
     }
 
