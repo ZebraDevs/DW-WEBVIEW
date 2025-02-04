@@ -4,6 +4,7 @@ import static android.widget.Toast.makeText;
 
 
 import static com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt.dwEnumScanners;
+import static com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt.registerReceiverKt;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
 //chrome://inspect/#devices for webview debugging
 
@@ -47,6 +49,9 @@ public class HDLauncherActivity extends AppCompatActivity {
 
     Intent starterIntent;
     WebView webView;
+
+    BroadcastReceiver broadcastReceiver;
+
     //@SuppressLint("JavascriptInterface")
     @SuppressLint("NewApi")
     @Override
@@ -64,7 +69,7 @@ public class HDLauncherActivity extends AppCompatActivity {
         webView.getSettings().setSupportZoom(true);
         webView.addJavascriptInterface(this, "DATAWEDGE");
 
-        BarcodeReceiverKt.createDataWedgeProfile(this, new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
@@ -81,9 +86,28 @@ public class HDLauncherActivity extends AppCompatActivity {
 
                                 entry[3] = bunb.getString("SCANNER_IDENTIFIER");
 
-                                Log.d("scanners", "Scanner:" + entry[0] + " Connection:" + entry[1] + " Index:" + entry[2] + " ID:" + entry[3]);
+                                Log.d("scanners", "#ENUM Scanner:" + entry[0] + " Connection:" + entry[1] + " Index:" + entry[2] + " ID:" + entry[3]);
                             }
                         }
+                    }
+                    if(intent.hasExtra("RESULT_INFO")) {
+                        Bundle resubundle = intent.getBundleExtra("RESULT_INFO");
+                        Set<String> keys = resubundle.keySet();
+                        String resultInfo = "";
+/*                        for (String key : keys) {
+                            try {
+                                resultInfo += key + ": " + resubundle.getString(key) + "\n";
+                            } catch (Exception e) {
+
+                            }
+                        }*/
+                        resultInfo += resubundle.getString("PROFILE_NAME") + "\n";
+                        try {
+                            resultInfo += Objects.requireNonNull(resubundle.getStringArray("RESULT_CODE"))[0] + "\n";
+                        } catch (Exception e) {
+
+                        }
+                        Log.d("RESULT_INFO", resultInfo);
                     }
                 }
                 else {
@@ -99,8 +123,13 @@ public class HDLauncherActivity extends AppCompatActivity {
                     webView.loadUrl("javascript:formFill('" + acquiredbarcode + "')");
                 }
             }
-        });
+        };
 
+        BarcodeReceiverKt.createDataWedgeProfile(this,  "dwWebview1", "###");
+        BarcodeReceiverKt.createDataWedgeProfile(this,  "dwWebview2", "$$$");
+        //since Feb.2025 created profiles are no longer associated with this app => use SWITCH PROFILE button
+
+        registerReceiverKt( this, broadcastReceiver)  ;
         dwEnumScanners(this);
 
     }
@@ -190,17 +219,65 @@ public class HDLauncherActivity extends AppCompatActivity {
         }
     }
 
-    static boolean hideOverlayWindows = false;
-    @SuppressLint("NewApi")
-    public void onClickbtn_HideNonSysWin(View v) {
+    private static int sourceVal=0;
+    public void onClickbtn_SWITCH_ONE(View v) {
         try {
-            hideOverlayWindows = !hideOverlayWindows;
-            getWindow().setHideOverlayWindows(hideOverlayWindows);
+
+            //TESTING https://techdocs.zebra.com/datawedge/latest/guide/api/switchscannerparams/
+            //by toggling the scanner source camera/imager
+
+            Intent i = new Intent();
+            i.setAction("com.symbol.datawedge.api.ACTION");
+
+            Bundle bScannerParams = new Bundle();
+
+            if(sourceVal++%2==0)
+                //bScannerParams.putString("scanner_selection", "0"); //PARAMETER_NOT_SUPPORTED
+                bScannerParams.putString("illumination_mode", "torch"); //ok
+
+            else
+                //bScannerParams.putString("scanner_selection", "1"); //PARAMETER_NOT_SUPPORTED
+                bScannerParams.putString("illumination_mode", "off"); //ok
+
+
+            i.putExtra("com.symbol.datawedge.api.SWITCH_SCANNER_PARAMS", bScannerParams);
+
+            i.putExtra("SEND_RESULT","true");
+            i.putExtra("COMMAND_IDENTIFIER", "123456789"); //returned as it is with the result
+            this.sendBroadcast(i);
 
         } catch (Exception e) {
-            Log.e("TAG", "onClickbtn_CAMERA "+e.getMessage());
+            Log.e("TAG", "onClickbtn_SWITCH_ONE "+e.getMessage());
         }
     }
+    public void onClickbtn_SWITCH_TWO(View v) {
+        try {
+
+            Intent i = new Intent();
+            i.setAction("com.symbol.datawedge.api.ACTION");
+
+            Bundle bScannerParams = new Bundle();
+
+            if(sourceVal++%2==0)
+                i.putExtra("com.symbol.datawedge.api.SWITCH_TO_PROFILE", "dwWebview1");
+
+            else
+                i.putExtra("com.symbol.datawedge.api.SWITCH_TO_PROFILE", "dwWebview2");
+
+
+
+            i.putExtra("SEND_RESULT","true");
+            i.putExtra("COMMAND_IDENTIFIER", "101010"); //returned as it is with the result
+            this.sendBroadcast(i);
+
+        } catch (Exception e) {
+            Log.e("TAG", "onClickbtn_SWITCH_TWO "+e.getMessage());
+        }
+    }
+
+    static boolean hideOverlayWindows = false;
+    @SuppressLint("NewApi")
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

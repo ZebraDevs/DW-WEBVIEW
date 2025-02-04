@@ -6,6 +6,7 @@ import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import androidx.core.content.ContextCompat.registerReceiver
 import com.zebra.dw_webview.BuildConfig
 
 
@@ -42,18 +43,19 @@ private val barcodeReceiver =
         }
     }*/
 
-fun dwSetPrefixPostfix(context: Context): Bundle {
+fun dwSetPrefixPostfix(context: Context, prefix_postfix: String): Bundle {
 
     val bBDFpluginConfig = Bundle()
     bBDFpluginConfig.putString("PLUGIN_NAME", "BDF")
-    bBDFpluginConfig.putString("RESET_CONFIG", "false")
+    bBDFpluginConfig.putString("RESET_CONFIG", "true")
     bBDFpluginConfig.putString("OUTPUT_PLUGIN_NAME", "INTENT")
 
     // param_list bundle properties
     val bParams = Bundle()
     bParams.putString("bdf_enabled", "true")
-    bParams.putString("bdf_prefix", BuildConfig.PREFIX)
-    //bParams.putString("bdf_send_enter", "true")
+    bParams.putString("bdf_prefix", prefix_postfix)
+    bParams.putString("bdf_suffix", prefix_postfix)
+    bParams.putString("bdf_send_enter", "false")
 
     bBDFpluginConfig.putBundle("PARAM_LIST", bParams)
 
@@ -91,7 +93,8 @@ fun dwConfigBarcodeInput(): Bundle {
     barcodeInputPlugin.putString("RESET_CONFIG", "true")
 
     val barCodeProps = Bundle()
-    barCodeProps.putString("scanner_selection", "0")  //0 for internal camera - auto for internal imager
+    //barCodeProps.putString("scanner_selection", "auto")  //0 for internal camera - auto for internal imager
+    barCodeProps.putString("scanner_selection_by_identifier", "INTERNAL_IMAGER");
     barCodeProps.putString("scanner_input_enabled", "true")
     barCodeProps.putString("decoder_qrcode", "false")
 
@@ -117,13 +120,13 @@ fun dwEnumScanners(context: Context) {
 
 
 
-fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver) {
+fun createDataWedgeProfile(context: Context, profileName: String, prefix_postfix: String) {
 
     val bMainProfile = Bundle()
     val bOutputPluginConfig = Bundle()
     val bParams = Bundle()
     val bundleApp1 = Bundle()
-    val appName = context.packageName
+    val appName = profileName
 
 
 
@@ -132,50 +135,38 @@ fun createDataWedgeProfile(context: Context, barcodeReceiver: BroadcastReceiver)
     bMainProfile.putString(CONFIG_MODE, CONFIG_MODE_CREATE)
 
     val bundleAllPluginsConfig = ArrayList<Bundle>()
-    bundleAllPluginsConfig.add( dwSetOutputPlugin(context.packageName ) )
 
-   // bundleAllPluginsConfig.add(dwSetPrefixPostfix(context))
+
+
+    bundleAllPluginsConfig.add(dwSetOutputPlugin(context.packageName))
+
     bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput())
 
     bundleAllPluginsConfig.add(dwConfigBarcodeInput())
 
-
-
+    bundleAllPluginsConfig.add(dwSetPrefixPostfix(context, prefix_postfix))
 
     bMainProfile.putParcelableArrayList("PLUGIN_CONFIG", bundleAllPluginsConfig)
-    bMainProfile.putParcelableArray("APP_LIST", dwSetAssociatedApps(context.packageName))
+
+    //bMainProfile.putParcelableArray("APP_LIST", dwSetAssociatedApps(context.packageName)) //removed on Feb 2025 to exercise profile switching
 
     val i = Intent()
     i.action = ACTION
     i.putExtra(SET_CONFIG, bMainProfile)
 
-
-
-    /*
-        val bNotification = Bundle()
-        bNotification.putString("com.symbol.datawedge.api.APPLICATION_NAME", appName)
-        bNotification.putString("com.symbol.datawedge.api.NOTIFICATION_TYPE", "SCANNER_STATUS")
-        i.action = "com.symbol.datawedge.api.ACTION"
-        i.putExtra("com.symbol.datawedge.api.REGISTER_FOR_NOTIFICATION", bNotification)
-
-     */
-
     context.sendBroadcast(i)
 
-   // i.putExtra(SET_CONFIG, dwSetPrefixPostfix(context))
-   // context.sendBroadcast(i)
+}
 
-
-
+fun registerReceiverKt(context: Context, barcodeReceiver: BroadcastReceiver){
     val filter = IntentFilter()
     filter.addCategory(Intent.CATEGORY_DEFAULT)
 
     val Activity_Intent_Filter = context.packageName
-
     filter.addAction(Activity_Intent_Filter)
     //filter.addAction(NOTIFICATION_ACTION)
     filter.addAction("com.symbol.datawedge.api.RESULT_ACTION")
-    context.registerReceiver(barcodeReceiver, filter, RECEIVER_EXPORTED)//register broadcast receiver - https://stackoverflow.com/questions/77235063/one-of-receiver-exported-or-receiver-not-exported-should-be-specified-when-a-rec
+    context.registerReceiver(barcodeReceiver, filter, RECEIVER_EXPORTED)
 }
 
 private fun dwSetOutputPlugin(

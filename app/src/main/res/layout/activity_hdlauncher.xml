@@ -19,7 +19,7 @@
         android:layout_marginRight="3dp"
         android:orientation="horizontal"
         android:layout_weight="1"
-        android:weightSum="2">
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_SCAN"
@@ -29,7 +29,7 @@
             android:layout_marginRight="3dp"
             android:layout_weight="1"
             android:onClick="onClickbtn_SCAN"
-            android:text="SCAN" />
+            android:text="SCAN\n" />
 
         <Button
             android:id="@+id/cam_button"
@@ -39,7 +39,28 @@
             android:layout_marginRight="3dp"
             android:layout_weight="1"
             android:onClick="onClickbtn_CAMERA"
-            android:text="CAMERA" />
+            android:text="CAM\n" />
+
+
+        <Button
+            android:id="@+id/btn_SWITCH_ONE"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:onClick="onClickbtn_SWITCH_ONE"
+            android:text="SWITCH PAR" />
+
+        <Button
+            android:id="@+id/btn_SWITCH_TWO"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:onClick="onClickbtn_SWITCH_TWO"
+            android:text="SWITCH PRO" />
 
 
     </LinearLayout>
