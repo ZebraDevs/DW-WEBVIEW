@@ -21,7 +21,7 @@ android {
         minSdk 27
         targetSdk 34
         versionCode 1
-        versionName "1.4-code refactoring"
+        versionName "1.5-exercising datawedge/latest/guide/api/notify/"
     }
 
     buildTypes {
