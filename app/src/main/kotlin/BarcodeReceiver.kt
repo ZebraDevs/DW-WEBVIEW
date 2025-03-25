@@ -95,7 +95,7 @@ fun dwConfigBarcodeInput(): Bundle {
     val barCodeProps = Bundle()
     //barCodeProps.putString("scanner_selection", "auto")  //0 for internal camera - auto for internal imager
     //barCodeProps.putString("scanner_selection_by_identifier", "INTERNAL_IMAGER");
-    barCodeProps.putString("scanner_selection_by_identifier", "BLUETOOTH_RS5100");  //TO TEST DW NOTIFICATIONS ON RS5100
+    barCodeProps.putString("scanner_selection_by_identifier", "BLUETOOTH_GENERIC");  //TO TEST DW NOTIFICATIONS ON RS5100
 
     barCodeProps.putString("scanner_input_enabled", "true")
     barCodeProps.putString("decoder_qrcode", "false")

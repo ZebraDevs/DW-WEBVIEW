@@ -24,7 +24,7 @@ private const val EXTRA_COMMAND = "COMMAND"
         val bundleNotificationConfig = Bundle()
         i.action = DATAWEDGE_ACTION;
 
-        bundleNotificationConfig.putString(DEVICE_IDENTIFIER, /*deviceId*/"BLUETOOTH_RS5100")//https://techdocs.zebra.com/datawedge/latest/guide/api/notify/
+        bundleNotificationConfig.putString(DEVICE_IDENTIFIER, /*deviceId*/"BLUETOOTH_GENERIC")//https://techdocs.zebra.com/datawedge/latest/guide/api/notify/
         // bundleNotificationConfig.putIntArray(NOTIFICATION_SETTINGS, notifyParams)
         bundleNotificationConfig.putIntArray("NOTIFICATION_SETTINGS", intArrayOf(17, 23, 8, 43))
         bundleNotify.putBundle(NOTIFICATION_CONFIG, bundleNotificationConfig)
