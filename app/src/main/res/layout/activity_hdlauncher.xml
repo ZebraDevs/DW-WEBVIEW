@@ -39,7 +39,7 @@
             android:layout_marginRight="3dp"
             android:layout_weight="1"
             android:onClick="onClickbtn_CAMERA"
-            android:text="CAM\n" />
+            android:text="NOT\n" />
 
 
         <Button

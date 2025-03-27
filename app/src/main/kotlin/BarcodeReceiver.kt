@@ -93,9 +93,12 @@ fun dwConfigBarcodeInput(): Bundle {
     barcodeInputPlugin.putString("RESET_CONFIG", "true")
 
     val barCodeProps = Bundle()
-    //barCodeProps.putString("scanner_selection", "auto")  //0 for internal camera - auto for internal imager
-    barCodeProps.putString("scanner_selection_by_identifier", "INTERNAL_IMAGER");
-    //barCodeProps.putString("scanner_selection_by_identifier", "BLUETOOTH_GENERIC");  //TO TEST DW NOTIFICATIONS ON RS5100
+    //barCodeProps.putString("scanner_selection", "auto")  //0 for internal camera - auto for internal imager - prefer do not use it. use scanner_selection_by_identifier
+
+    // for scanner_selection_by_identifier refer to https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/#scanneridentifiers
+    //barCodeProps.putString("scanner_selection_by_identifier", "INTERNAL_IMAGER");
+    barCodeProps.putString("scanner_selection_by_identifier", "INTERNAL_CAMERA"); //useful for imagerless devices and to test setHideOverlayWindows
+    //barCodeProps.putString("scanner_selection_by_identifier", "BLUETOOTH_RS5100");  //TO TEST DW NOTIFICATIONS ON RS5100. MUST MATCH putString(DEVICE_IDENTIFIER,"BLUETOOTH_RS5100")
 
     barCodeProps.putString("scanner_input_enabled", "true")
     barCodeProps.putString("decoder_qrcode", "false")

@@ -234,6 +234,20 @@ public class HDLauncherActivity extends AppCompatActivity {
     }
 
 
+    static boolean hideOverlayWindows = false;
+    @SuppressLint("NewApi")
+    public void onClickbtn_HideNonSysWin(View v) {
+        try {
+            hideOverlayWindows = !hideOverlayWindows;
+            getWindow().setHideOverlayWindows(hideOverlayWindows);
+
+            //WHEN SCANNING WITH DW INTERNAL CAMERA, THE CAMERA PREVIEW IS HIDDEN - BUT THE BARCODES GET DECODED!
+
+        } catch (Exception e) {
+            Log.e("TAG", "onClickbtn_CAMERA "+e.getMessage());
+        }
+    }
+
 
     private static int sourceVal=0;
     public void onClickbtn_SWITCH_ONE(View v) {
@@ -290,9 +304,6 @@ public class HDLauncherActivity extends AppCompatActivity {
             Log.e("TAG", "onClickbtn_SWITCH_TWO "+e.getMessage());
         }
     }
-
-    static boolean hideOverlayWindows = false;
-    @SuppressLint("NewApi")
 
 
     @Override
