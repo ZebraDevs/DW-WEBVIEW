@@ -52,5 +52,24 @@
         `bundleAllPluginsConfig.add(dwSwitchOffKeystrokeOutput(context))`
 
 
+## HIDE OVERLAY WINDOWS
+
+![image](https://github.com/user-attachments/assets/277a3ca7-3b9e-4fd6-bdd0-973bbbd0ba3c)
+
+To test this feature:
+
+- ensure the DW profile uses INTERNAL_CAMERA as barcode input source
+- keep switch 5 off
+- press 4 to activate a DW profile
+- press 1 or side scan buttons to trigger scanning. Note that the camera preview is visible
+- then set 5
+- again scan with 1 or side buttons - appreciate that the scanning completes, but no preview is available
+- long press 2 - the system camera preview is brought up. it is not affected by the setHideOverlayWindows API
+
+
+
+
+
+
       
 
