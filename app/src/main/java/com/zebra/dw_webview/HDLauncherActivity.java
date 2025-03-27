@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.zebra.arcore.psspoc.helpers.BarcodeReceiverKt;
@@ -63,6 +64,17 @@ public class HDLauncherActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setSupportZoom(true);
         webView.addJavascriptInterface(this, "DATAWEDGE");
+
+        Button camButton = findViewById(R.id.cam_button);
+        camButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                dispatchTakePictureIntent();
+
+                return true;
+            }
+        });
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -220,7 +232,7 @@ public class HDLauncherActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickbtn_CAMERA(View v) {
+    public void onClickbtn_NOTIFY(View v) {
         try {
             //dispatchTakePictureIntent();
 
@@ -232,8 +244,6 @@ public class HDLauncherActivity extends AppCompatActivity {
             Log.e("TAG", "onClickbtn_CAMERA "+e.getMessage());
         }
     }
-
-
     static boolean hideOverlayWindows = false;
     @SuppressLint("NewApi")
     public void onClickbtn_HideNonSysWin(View v) {
