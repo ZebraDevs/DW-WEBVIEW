@@ -1,10 +1,13 @@
 # DATAWEGDE INTEGRATION INTO A WEBVIEW-BASED APP
 
 
-## v1.6+ INFORMATION: Since Feb.2025 created profiles are no longer associated with this app => use the "SWITCH PRO" button to enable a profile when running the app
+## v1.6+ INFORMATION
+
+Since Feb.2025 created profiles are no longer associated with this app => use the "SWITCH PRO" button to enable a profile when running the app
 
 
 
+## Release notes
 
 - Successfully tested on A8.1, A13, A14 Webview 117, 121 and 122
 - Two variants are now supported and each creates its dedicated DW profile
