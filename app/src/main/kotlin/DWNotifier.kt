@@ -30,5 +30,5 @@ private const val EXTRA_COMMAND = "COMMAND"
         bundleNotify.putBundle(NOTIFICATION_CONFIG, bundleNotificationConfig)
         i.putExtra(NOTIFY_EXTRA, bundleNotify)
         i.putExtra(EXTRA_SEND_RESULT, "true")
-        context.sendBroadcast(i)
+        context.sendOrderedBroadcast(i, null)
     }

@@ -225,7 +225,7 @@ public class HDLauncherActivity extends AppCompatActivity {
             i.putExtra(extraData, "START_SCANNING");
 
 // send the intent to DataWedge
-            this.sendBroadcast(i);
+            this.sendOrderedBroadcast(i, null);
 
         } catch (Exception e) {
             Log.e("TAG", "onClickbtn_SCAN "+e.getMessage());
@@ -284,7 +284,7 @@ public class HDLauncherActivity extends AppCompatActivity {
 
             i.putExtra("SEND_RESULT","true");
             i.putExtra("COMMAND_IDENTIFIER", "123456789"); //returned as it is with the result
-            this.sendBroadcast(i);
+            this.sendOrderedBroadcast(i, null);
 
         } catch (Exception e) {
             Log.e("TAG", "onClickbtn_SWITCH_ONE "+e.getMessage());
@@ -308,7 +308,7 @@ public class HDLauncherActivity extends AppCompatActivity {
 
             i.putExtra("SEND_RESULT","true");
             i.putExtra("COMMAND_IDENTIFIER", "101010"); //returned as it is with the result
-            this.sendBroadcast(i);
+            this.sendOrderedBroadcast(i, null);
 
         } catch (Exception e) {
             Log.e("TAG", "onClickbtn_SWITCH_TWO "+e.getMessage());

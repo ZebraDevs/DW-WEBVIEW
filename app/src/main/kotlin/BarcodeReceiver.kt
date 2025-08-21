@@ -29,7 +29,7 @@ fun dwStartScan(context: Context) {
     val i = Intent()
     i.action = softScanTrigger
     i.putExtra(extraData, "START_SCANNING")
-    context.sendBroadcast(i)
+    context.sendOrderedBroadcast(i, null)
 }
 /*
 private val barcodeReceiver =
@@ -115,7 +115,7 @@ fun dwEnumScanners(context: Context) {
     val i = Intent()
     i.setAction("com.symbol.datawedge.api.ACTION")
     i.putExtra("com.symbol.datawedge.api.ENUMERATE_SCANNERS", "")
-    context.sendBroadcast(i);
+    context.sendOrderedBroadcast(i, null);
 }
 
 
@@ -159,7 +159,7 @@ fun createDataWedgeProfile(context: Context, profileName: String, prefix_postfix
     i.action = ACTION
     i.putExtra(SET_CONFIG, bMainProfile)
 
-    context.sendBroadcast(i)
+    context.sendOrderedBroadcast(i, null)
 
 }
 
