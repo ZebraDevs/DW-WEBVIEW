@@ -110,11 +110,36 @@ public class HDLauncherActivity extends AppCompatActivity {
                         }*/
                         resultInfo += resubundle.getString("PROFILE_NAME") + "\n";
                         try {
-                            resultInfo += Objects.requireNonNull(resubundle.getStringArray("RESULT_CODE"))[0] + "\n";
+                            //resultInfo += Objects.requireNonNull(resubundle.getStringArray("RESULT_CODE"))[0] + "\n";
+                            resultInfo += Objects.requireNonNull(resubundle.getString("RESULT_CODE")) + "\n";
+
                         } catch (Exception e) {
 
                         }
                         Log.d("RESULT_INFO", resultInfo);
+                    }
+                }
+                else if(  intent.getAction().equals("com.symbol.datawedge.api.NOTIFICATION_ACTION") ){
+                    Log.d("NOTIFICATION_ACTION", "datawedge.api.NOTIFICATION_ACTION received");
+                    if (intent.hasExtra("com.symbol.datawedge.api.NOTIFICATION")) {
+
+                        Bundle b = intent.getBundleExtra("com.symbol.datawedge.api.NOTIFICATION");
+
+                        // Safety check to ensure bundle is not null
+                        if (b != null) {
+                            String notifType = b.getString("NOTIFICATION_TYPE");
+                            if ("PROFILE_SWITCH".equals(notifType)) {
+                                Log.d("NOTIFICATION_ACTION", "Received  PROFILE_SWITCH Notification");
+
+                                // Iterate through all keys in the bundle to log the details
+                                for (String key : b.keySet()) {
+                                    Log.d("NOTIFICATION_ACTION", "Key: " + key + ", Value: " + b.get(key) +", TIME="+System.currentTimeMillis());
+
+                                    //FOLLOW-UP LOGIC TO BE IMPLEMENTED HERE
+                                }
+
+                            }
+                        }
                     }
                 }
                 else {
@@ -309,6 +334,7 @@ public class HDLauncherActivity extends AppCompatActivity {
             i.putExtra("SEND_RESULT","true");
             i.putExtra("COMMAND_IDENTIFIER", "101010"); //returned as it is with the result
             this.sendOrderedBroadcast(i, null);
+            Log.d("SWITCH_TO_PROFILE", "SWITCH_TO_PROFILE cmd sent now "+ System.currentTimeMillis());
 
         } catch (Exception e) {
             Log.e("TAG", "onClickbtn_SWITCH_TWO "+e.getMessage());

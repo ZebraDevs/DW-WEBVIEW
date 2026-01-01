@@ -21,7 +21,7 @@ android {
         minSdk 27
         targetSdk 34
         versionCode 1
-        versionName "1.61-notify API+setHideOverlayWindows"
+        versionName "1.7-datawedge.api.NOTIFICATION_ACTION"
     }
 
     buildTypes {

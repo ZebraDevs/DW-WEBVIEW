@@ -169,9 +169,26 @@ fun registerReceiverKt(context: Context, barcodeReceiver: BroadcastReceiver){
 
     val Activity_Intent_Filter = context.packageName
     filter.addAction(Activity_Intent_Filter)
-    //filter.addAction(NOTIFICATION_ACTION)
+    filter.addAction(NOTIFICATION_ACTION)
     filter.addAction("com.symbol.datawedge.api.RESULT_ACTION")
     context.registerReceiver(barcodeReceiver, filter, RECEIVER_EXPORTED)
+
+    registerForProfileNotifications(context) //https://techdocs.zebra.com/datawedge/15-0/guide/api/registerfornotification/
+}
+
+private fun registerForProfileNotifications(context: Context) {
+    val b = Bundle()
+    b.putString( "com.symbol.datawedge.api.APPLICATION_NAME", BuildConfig.APPLICATION_ID) // Only this app will receive the notification
+    b.putString("com.symbol.datawedge.api.NOTIFICATION_TYPE", "PROFILE_SWITCH")
+
+    val i = Intent()
+    i.action = "com.symbol.datawedge.api.ACTION"
+    i.setPackage("com.symbol.datawedge") // Explicitly send to DataWedge
+
+    val actionKey =  "com.symbol.datawedge.api.REGISTER_FOR_NOTIFICATION"
+    i.putExtra(actionKey, b)
+
+    context.sendBroadcast(i)
 }
 
 private fun dwSetOutputPlugin(
